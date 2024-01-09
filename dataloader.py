@@ -17,7 +17,7 @@ def loader(data_packed, batch_size, flag):
                                 )
     return dataloader
 
-def loadercheck(dataloader):
+def print_loader(dataloader):
     b = next(iter(dataloader))
     print('loader key:', b.keys())
     print('input_ids:',  b["input_ids"][0][:25])
