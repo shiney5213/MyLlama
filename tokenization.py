@@ -1,4 +1,5 @@
 import json
+import torch
 
 
 def json_open(JSON_PATH):
@@ -7,9 +8,13 @@ def json_open(JSON_PATH):
         alpaca = f.read()
 
     alpaca = json.loads(alpaca)
-    print('data len', len(alpaca) )
+    # print('data len', len(alpaca) )
 
     return alpaca
+
+
+def create_prompt(row):
+    return prompt_no_input(row) if row["input"] == "" else prompt_input(row)
 
 
 def prompt_no_input(row):
@@ -23,8 +28,7 @@ def prompt_input(row):
             "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:\n").format_map(row)
     
 
-def create_prompt(row):
-    return prompt_no_input(row) if row["input"] == "" else prompt_input(row)
+
 
 
 def pack(tokenizer, dataset, max_seq_len=1024):
@@ -44,12 +48,46 @@ def pack(tokenizer, dataset, max_seq_len=1024):
     return packed_ds
 
 
+ 
+# def generate(prompt, max_new_tokens=100, gen_config=gen_config):
+#     with torch.inference_mode():
+#         tokenized_prompt = tokenizer(prompt, return_tensors='pt')['input_ids'].cuda()
+#         output = model.generate(tokenized_prompt, 
+#                             max_new_tokens=max_new_tokens, 
+#                             generation_config=gen_config)
+#     return tokenizer.decode(output[0][len(tokenized_prompt[0]):], skip_special_tokens=True)
 
 
+def token_encode(tokenizer, padding = 'longest', max_length = 10):
 
+    # text is sentence
+    test_text = "My experiments are going strong!"
+    test_text = ["My experiments are going strong!", "I love Llamas"]
 
-
-
-
-
-
+    # padding method
+    if isinstance(test_text, str):
+        if padding == 'longest':
+            return tokenizer.encode(test_text, 
+                                    padding='longest',
+                                    return_tensors="pt"   # type : tensor
+                                    )
+        else:
+            return tokenizer.encode(test_text, 
+                                    padding='max_length',
+                                    max_length = max_length,
+                                    return_tensors="pt"   # type : tensor
+                                    )                            
+    
+    elif isinstance(test_text, list):
+        # Batching multiple sequences of different lengths
+        if padding == 'longest':
+            return tokenizer(test_text, 
+                                padding=padding,
+                                return_tensors="pt"   # type : tensor
+                                )
+        else:
+            return  tokenizer(test_text, 
+                                    padding='max_length',
+                                    max_length = max_length,
+                                    return_tensors="pt"   # type : tensor
+                                    )           
