@@ -18,8 +18,9 @@ class train_config:
 
     ### dataset
     # dataset = "samsum_dataset"
-    # dataset = "alpaca_dataset"
-    dataset = "grammar_dataset"
+    dataset = "alpaca_dataset"
+    # dataset = "grammar_dataset"
+    # dataset = "custom_dataset"
 
 
     ### model
