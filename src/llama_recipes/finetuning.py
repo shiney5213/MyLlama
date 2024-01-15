@@ -76,6 +76,9 @@ def main(**kwargs):
         split="train",
     )
 
+    # alpaca : 51802
+    # merge data: 132099
+
 
     ##### model
     ### set model config
@@ -157,7 +160,6 @@ def main(**kwargs):
     
     print_model_size(model, train_config, rank if train_config.enable_fsdp else 0)
 
-    raise ValueError
 
 
     # Prepare the model for int8 training if quantization is enabled
