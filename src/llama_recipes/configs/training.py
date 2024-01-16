@@ -6,15 +6,15 @@ import torch
 
 @dataclass
 class train_config:
-    ### setting
+
+    ##### basic parameter
     seed: int=42
     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    CUDA_VISIBLE_DEVICES = 0
+    CUDA_VISIBLE_DEVICES = "0"
 
     ### path
     # output_dir: str = "PATH/to/save/PEFT/model"
     output_dir: str = "results/model"
-
 
     ### dataset
     # dataset = "samsum_dataset"
@@ -22,23 +22,52 @@ class train_config:
     # dataset = "grammar_dataset"
     # dataset = "custom_dataset"
 
-
     ### model
-    model_name : str= '../../../llama_model/llama-2-7b-hf' 
+    model_name : str= '../../../llama_models/llama-2-7b-hf' 
 
-    # FSDP(Fully Sharded Data Parallel)
-    enable_fsdp: bool=False     
-    low_cpu_fsdp: bool=False
-    # enable_fsdp: bool=True     
-    # low_cpu_fsdp: bool=True
+    ### save
+    save_model: bool = True
+    dist_checkpoint_root_folder: str="PATH/to/save/FSDP/model" # will be used if using FSDP
+    dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
+    save_optimizer: bool=False # will be used if using FSDP
+    save_metrics: bool = False # saves training metrics to a json file for later plotting
+    
+    ### basic setting
+    # num_epochs: int=3
+    num_epochs: int=1
+    num_workers_dataloader: int=1
+    lr: float=1e-4
+    weight_decay: float=0.0
+    gamma: float= 0.85
+    mixed_precision: bool=True
+    val_batch_size: int=1
 
-    # PEFT(Parameter Efficient Fine-tuning)
-    peft_method: str = "lora" # None , llama_adapter, prefix
-    use_peft: bool=False              
-    freeze_layers: bool = False
-    num_freeze_layers: int = 1
+    run_validation: bool=True
+    # batch_size_training: int=4
+    batch_size_training: int=1
+    batching_strategy: str="packing" #alternative: padding
+    context_length: int=4096
+    
 
     
+    
+    ##### setting
+    one_gpu: bool = False
+
+    # FSDP(Fully Sharded Data Parallel)
+    # enable_fsdp: bool=False   
+    enable_fsdp: bool=True   
+    low_cpu_fsdp: bool=False   # 70B 모델 조정할 때 사용
+
+    # PEFT(Parameter Efficient Fine-tuning)
+    use_peft: bool=False
+    peft_method: str = "lora" # None , llama_adapter, prefix
+
+
+
+    # Create a gradient scaler for fp16
+    use_fp16: bool=False
+    # enable_fsdp: bool=False 
 
     # Enable using SDPA from PyTroch Accelerated Transformers, make use Flash Attention and Xformer memory-efficient kernels
     use_fast_kernels: bool = False 
@@ -46,41 +75,15 @@ class train_config:
     # quantization: bool = False
     quantization: bool = True
 
-
-
-
-
-
-    run_validation: bool=True
-    # batch_size_training: int=4
-    batch_size_training: int=1
-    batching_strategy: str="packing" #alternative: padding
-    context_length: int=4096
+   
     gradient_accumulation_steps: int=1
     gradient_clipping: bool = False
     gradient_clipping_threshold: float = 1.0
-    # num_epochs: int=3
-    num_epochs: int=1
-    num_workers_dataloader: int=1
-    lr: float=1e-4
-    weight_decay: float=0.0
-    gamma: float= 0.85
-    use_fp16: bool=False
-    mixed_precision: bool=True
-    val_batch_size: int=1
-    
-
+               
+    freeze_layers: bool = False
+    num_freeze_layers: int = 1
     
     
-    one_gpu: bool = False
-    save_model: bool = True
-    dist_checkpoint_root_folder: str="PATH/to/save/FSDP/model" # will be used if using FSDP
-    dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
-    save_optimizer: bool=False # will be used if using FSDP
-    save_metrics: bool = False # saves training metrics to a json file for later plotting
-
-
-
 
 
 
