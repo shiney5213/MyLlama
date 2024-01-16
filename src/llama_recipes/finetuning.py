@@ -92,6 +92,11 @@ def main(**kwargs):
         rank = int(os.environ["RANK"])
         # 전체 gpu(process) 개수
         world_size = int(os.environ["WORLD_SIZE"])
+        print('world_size:', world_size)
+        print('rank:', rank)
+        print('local_rank:', local_rank)
+
+        raise ValueError
 
     if torch.distributed.is_initialized():  # False
         # 기본 프로세스 그룹이 초기화되지 않았다면
