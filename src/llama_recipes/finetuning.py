@@ -22,8 +22,8 @@ from transformers.models.llama.modeling_llama import LlamaDecoderLayer
 # from configs import train_config as TRAIN_CONFIG
 from configs.fsdp import fsdp_config as FSDP_CONFIG
 from configs.training import train_config as TRAIN_CONFIG
-# from data.concatenator import ConcatDataset
-# from policies import AnyPrecisionAdamW, apply_fsdp_checkpointing
+from data.concatenator import ConcatDataset
+from policies import AnyPrecisionAdamW, apply_fsdp_checkpointing
 
 from utils import fsdp_auto_wrap_policy
 from utils.config_utils import (
@@ -55,6 +55,14 @@ def main(**kwargs):
     torch.cuda.manual_seed(train_config.seed)
     torch.manual_seed(train_config.seed)
     random.seed(train_config.seed)
+
+
+    # Set multi GPU
+    os.environ['MASTER_ADDR'] = 'localhost'
+    os.environ['MASTER_PORT'] = '12355'
+    os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID" 
+    os.environ["CUDA_VISIBLE_DEVICES"]= train_config.CUDA_VISIBLE_DEVICES
+
 
 
     ##### dataset
@@ -92,12 +100,8 @@ def main(**kwargs):
         rank = int(os.environ["RANK"])
         # 전체 gpu(process) 개수
         world_size = int(os.environ["WORLD_SIZE"])
-        print('world_size:', world_size)
-        print('rank:', rank)
-        print('local_rank:', local_rank)
-
-        raise ValueError
-
+        
+    
     if torch.distributed.is_initialized():  # False
         # 기본 프로세스 그룹이 초기화되지 않았다면
         
@@ -112,6 +116,7 @@ def main(**kwargs):
 
     ### load pretrained model
     if train_config.enable_fsdp and train_config.low_cpu_fsdp:
+        # 70b 등 대용량 모델에서 사용
         """
         for FSDP, we can save cpu memory by loading pretrained model on rank0 only.
         this avoids cpu oom when loading large models like llama 70B, in which case
@@ -180,6 +185,9 @@ def main(**kwargs):
     if train_config.use_peft:
         # PEFT(Parameter Efficient Fine-tuning)
         peft_config = generate_peft_config(train_config, kwargs)
+        print('peft_config')
+        print(peft_config)
+        raise ValueError
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
 

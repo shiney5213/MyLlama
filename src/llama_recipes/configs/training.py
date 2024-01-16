@@ -10,7 +10,11 @@ class train_config:
     ##### basic parameter
     seed: int=42
     DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    CUDA_VISIBLE_DEVICES = "0"
+
+    if torch.cuda.device_count() == 1:
+        CUDA_VISIBLE_DEVICES = "0"
+    else:
+        CUDA_VISIBLE_DEVICES = "0, 1"
 
     ### path
     # output_dir: str = "PATH/to/save/PEFT/model"
@@ -27,7 +31,7 @@ class train_config:
 
     ### save
     save_model: bool = True
-    dist_checkpoint_root_folder: str="PATH/to/save/FSDP/model" # will be used if using FSDP
+    dist_checkpoint_root_folder: str="results/FSDP/model" # will be used if using FSDP
     dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
     save_optimizer: bool=False # will be used if using FSDP
     save_metrics: bool = False # saves training metrics to a json file for later plotting
@@ -55,8 +59,7 @@ class train_config:
     one_gpu: bool = False
 
     # FSDP(Fully Sharded Data Parallel)
-    # enable_fsdp: bool=False   
-    enable_fsdp: bool=True   
+    enable_fsdp: bool=False   # windows에서는 nccl 사용 불가 -> 고정
     low_cpu_fsdp: bool=False   # 70B 모델 조정할 때 사용
 
     # PEFT(Parameter Efficient Fine-tuning)
