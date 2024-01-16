@@ -27,6 +27,9 @@ class alpaca_dataset:
     test_split: str = "val"
     # data_path: str = "src/llama_recipes/datasets/alpaca_data.json"
     data_path = "../../../dataset/merge_rlfg_platypus/merge.json"
+    data_path = "../../../dataset/merge_rlfg_platypus/merge_eval_1321.json"
+
+
     
     
 @dataclass
