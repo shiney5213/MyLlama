@@ -16,9 +16,15 @@ class train_config:
     else:
         CUDA_VISIBLE_DEVICES = "0, 1"
 
-    ### path
+    ### save
     # output_dir: str = "PATH/to/save/PEFT/model"
     output_dir: str = "results/model"
+    save_model: bool = True
+    dist_checkpoint_root_folder: str="results/FSDP/model" # will be used if using FSDP
+    dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
+    save_optimizer: bool=False # will be used if using FSDP
+    save_metrics: bool = False # saves training metrics to a json file for later plotting
+    
 
     ### dataset
     # dataset = "samsum_dataset"
@@ -28,13 +34,10 @@ class train_config:
 
     ### model
     model_name : str= '../../../llama_models/llama-2-7b-hf' 
+    # quantization: bool = False   # OOM 발생
+    quantization: bool = True
 
-    ### save
-    save_model: bool = True
-    dist_checkpoint_root_folder: str="results/FSDP/model" # will be used if using FSDP
-    dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
-    save_optimizer: bool=False # will be used if using FSDP
-    save_metrics: bool = False # saves training metrics to a json file for later plotting
+
     
     ### basic setting
     # num_epochs: int=3
@@ -45,50 +48,45 @@ class train_config:
     gamma: float= 0.85
     mixed_precision: bool=True
     val_batch_size: int=1
-
-    run_validation: bool=True
+    run_validation: bool=True   # False: train data의 tail에서 선택
     # batch_size_training: int=4
     batch_size_training: int=1
-    batching_strategy: str="packing" #alternative: padding
-    context_length: int=4096
     
 
-    
+    ### tokenizer
+    batching_strategy: str="packing" #alternative: padding
+    context_length: int=4096
+
     
     ##### setting
     one_gpu: bool = False
+    # Enable using SDPA from PyTroch Accelerated Transformers, make use Flash Attention and Xformer memory-efficient kernels
+    use_fast_kernels: bool = False 
 
     # FSDP(Fully Sharded Data Parallel)
     enable_fsdp: bool=False   # windows에서는 nccl 사용 불가 -> 고정
     low_cpu_fsdp: bool=False   # 70B 모델 조정할 때 사용
+    
 
     # PEFT(Parameter Efficient Fine-tuning)
-    use_peft: bool=False
+    # use_peft: bool=False     # peft_config = None ->저장 불가
+    use_peft: bool=True
     peft_method: str = "lora" # None , llama_adapter, prefix
-
-
+    freeze_layers: bool = False
+    num_freeze_layers: int = 1
 
     # Create a gradient scaler for fp16
     use_fp16: bool=False
-    # enable_fsdp: bool=False 
 
-    # Enable using SDPA from PyTroch Accelerated Transformers, make use Flash Attention and Xformer memory-efficient kernels
-    use_fast_kernels: bool = False 
+       
 
-    # quantization: bool = False
-    quantization: bool = True
-
-   
+       
     gradient_accumulation_steps: int=1
     gradient_clipping: bool = False
     gradient_clipping_threshold: float = 1.0
                
-    freeze_layers: bool = False
-    num_freeze_layers: int = 1
     
     
-
-
 
 # from types import SimpleNamespace
 
