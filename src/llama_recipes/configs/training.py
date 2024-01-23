@@ -40,8 +40,8 @@ class train_config:
 
     
     ### basic setting
-    # num_epochs: int=3
-    num_epochs: int=1
+    num_epochs: int=3
+    # num_epochs: int=1
     num_workers_dataloader: int=1
     lr: float=1e-4
     weight_decay: float=0.0
