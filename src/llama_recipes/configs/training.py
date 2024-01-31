@@ -18,7 +18,7 @@ class train_config:
 
     ### save
     # output_dir: str = "PATH/to/save/PEFT/model"
-    output_dir: str = "results/model"
+    output_dir: str = "results/model_6th_without_code"
     save_model: bool = True
     dist_checkpoint_root_folder: str="results/FSDP/model" # will be used if using FSDP
     dist_checkpoint_folder: str="fine-tuned" # will be used if using FSDP
@@ -33,24 +33,30 @@ class train_config:
     # dataset = "custom_dataset"
 
     ### model
-    model_name : str= '../../../llama_models/llama-2-7b-hf' 
+    # model_name : str= '../../../llama_models/llama-2-7b-hf' 
+    model_name : str= 'beomi/open-llama-2-ko-7b'
     # quantization: bool = False   # OOM 발생
     quantization: bool = True
 
 
     
     ### basic setting
+<<<<<<< HEAD
     # num_epochs: int=3
-    num_epochs: int=1
+    num_epochs: int=2
+    num_workers_dataloader: int=4
+=======
+    num_epochs: int=3
+    # num_epochs: int=1
     num_workers_dataloader: int=1
+>>>>>>> 2b37f4108afc35b18939596cb88db459af30545e
     lr: float=1e-4
     weight_decay: float=0.0
     gamma: float= 0.85
     mixed_precision: bool=True
     val_batch_size: int=1
     run_validation: bool=True   # False: train data의 tail에서 선택
-    # batch_size_training: int=4
-    batch_size_training: int=1
+    batch_size_training: int=4
     
 
     ### tokenizer

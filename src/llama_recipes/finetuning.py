@@ -1,6 +1,7 @@
 import os
 from pkg_resources import packaging
 
+import json
 import fire
 import random
 import torch
@@ -44,6 +45,9 @@ from utils.train_utils import (
     get_policies
 )
 
+with open("auth_tokens.json", "r") as f:
+	HF_AUTH_TOKEN = json.loads(f.read())["hf_token"]
+
 def main(**kwargs):
 
     # Update the configuration for the training and sharding process
@@ -63,26 +67,7 @@ def main(**kwargs):
     os.environ["CUDA_DEVICE_ORDER"]="PCI_BUS_ID" 
     os.environ["CUDA_VISIBLE_DEVICES"]= train_config.CUDA_VISIBLE_DEVICES
 
-
-
-    ##### dataset
-    # dataset_config 
-    dataset_config = generate_dataset_config(train_config, kwargs)
-
-
-    ##### tokenizer
-    # Load the tokenizer and add special tokens
-    tokenizer = LlamaTokenizer.from_pretrained(train_config.model_name)
-    tokenizer.pad_token_id = tokenizer.eos_token_id     # 2
-
-
-
-    # Load and preprocess the dataset for training and validation
-    dataset_train = get_preprocessed_dataset(
-        tokenizer,
-        dataset_config,
-        split="train",
-    )
+    print("base model name:", train_config.model_name)
 
     # alpaca : 51802
     # merge data: 132099
@@ -166,11 +151,26 @@ def main(**kwargs):
         except ImportError:
             print("Module 'optimum' not found. Please install 'optimum' it before proceeding.")
 
-
-    
     print_model_size(model, train_config, rank if train_config.enable_fsdp else 0)
 
+    # Tokenizer 위치이동
+    ##### dataset
+    # dataset_config 
+    dataset_config = generate_dataset_config(train_config, kwargs)
 
+
+    ##### tokenizer
+    # Load the tokenizer and add special tokens
+    tokenizer = LlamaTokenizer.from_pretrained(train_config.model_name)
+    tokenizer.pad_token_id = tokenizer.eos_token_id     # 2
+
+    # Load and preprocess the dataset for training and validation
+    dataset_train = get_preprocessed_dataset(
+        tokenizer,
+        dataset_config,
+        split="train",
+    )
+    # huggingface에서 불러다 쓸 경우 모델이 호출된 다음에 호출해야 함
 
     # Prepare the model for int8 training if quantization is enabled
     if train_config.quantization:
@@ -185,9 +185,6 @@ def main(**kwargs):
     if train_config.use_peft:
         # PEFT(Parameter Efficient Fine-tuning)
         peft_config = generate_peft_config(train_config, kwargs)
-        print('peft_config')
-        print(peft_config)
-        raise ValueError
         model = get_peft_model(model, peft_config)
         model.print_trainable_parameters()
 

@@ -15,7 +15,7 @@ from transformers import default_data_collator
 from transformers.data import DataCollatorForSeq2Seq
 
 from configs import datasets, lora_config, llama_adapter_config, prefix_config, train_config
-# from data.sampler import LengthBasedBatchSampler, DistributedLengthBasedBatchSampler
+from data.sampler import LengthBasedBatchSampler, DistributedLengthBasedBatchSampler
 from utils.dataset_utils import DATASET_PREPROC
 
 

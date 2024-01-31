@@ -1,0 +1,23 @@
+D:\shiney\MyLlama\src\llama_recipes\finetuning.py:2: DeprecationWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html
+  from pkg_resources import packaging
+C:\Users\82105\anaconda3\envs\llama-recipies\lib\site-packages\transformers\utils\generic.py:441: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+C:\Users\82105\anaconda3\envs\llama-recipies\lib\site-packages\transformers\utils\generic.py:309: UserWarning: torch.utils._pytree._register_pytree_node is deprecated. Please use torch.utils._pytree.register_pytree_node instead.
+  _torch_pytree._register_pytree_node(
+D:\shiney\MyLlama\src\llama_recipes
+bin C:\Users\82105\anaconda3\envs\llama-recipies\lib\site-packages\bitsandbytes\libbitsandbytes_cuda118.dll
+Loading checkpoint shards:   0%|          | 0/2 [00:00<?, ?it/s]Loading checkpoint shards:  50%|█████     | 1/2 [00:05<00:05,  5.45s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.10s/it]Loading checkpoint shards: 100%|██████████| 2/2 [00:06<00:00,  3.45s/it]
+--> Model ../../../llama_models/llama-2-7b-hf
+
+--> ../../../llama_models/llama-2-7b-hf has 262.41024 Million params
+
+C:\Users\82105\anaconda3\envs\llama-recipies\lib\site-packages\peft\utils\other.py:141: FutureWarning: prepare_model_for_int8_training is deprecated and will be removed in a future version. Use prepare_model_for_kbit_training instead.
+  warnings.warn(
+trainable params: 4,194,304 || all params: 6,742,609,920 || trainable%: 0.06220594176090199
+--> Training Set Length = 329
+--> Validation Set Length = 200
+Preprocessing dataset:   0%|          | 0/329 [00:00<?, ?it/s]Preprocessing dataset:  21%|██        | 68/329 [00:00<00:00, 619.27it/s]Preprocessing dataset:  41%|████      | 135/329 [00:00<00:00, 629.19it/s]Preprocessing dataset:  60%|██████    | 198/329 [00:00<00:00, 616.51it/s]Preprocessing dataset:  79%|███████▉  | 260/329 [00:00<00:00, 593.27it/s]Preprocessing dataset: 100%|██████████| 329/329 [00:00<00:00, 626.72it/s]
+Preprocessing dataset:   0%|          | 0/200 [00:00<?, ?it/s]Preprocessing dataset:  26%|██▌       | 52/200 [00:00<00:00, 473.57it/s]Preprocessing dataset:  58%|█████▊    | 116/200 [00:00<00:00, 537.86it/s]Preprocessing dataset:  92%|█████████▏| 183/200 [00:00<00:00, 593.67it/s]Preprocessing dataset: 100%|██████████| 200/200 [00:00<00:00, 608.35it/s]
+C:\Users\82105\anaconda3\envs\llama-recipies\lib\site-packages\torch\cuda\memory.py:330: FutureWarning: torch.cuda.reset_max_memory_allocated now calls torch.cuda.reset_peak_memory_stats, which resets /all/ peak memory stats.
+  warnings.warn(
+Training Epoch: 1:   0%|          | 0/10 [00:00<?, ?it/s]
