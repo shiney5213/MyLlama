@@ -12,6 +12,7 @@ from torch.utils.data import Dataset
 
 # PROMPT_DICT = {
 #     "prompt_input": (
+<<<<<<< HEAD
 #         "Below is an instruction that describes a task, paired with an input that provides further context.\n"
 #         "아래는 작업을 설명하는 명령어와 추가적 맥락을 제공하는 입력이 짝을 이루는 예제입니다.\n\n"
 #         "Write a response that appropriately completes the request.\n요청을 적절히 완료하는 응답을 작성하세요.\n\n"
@@ -22,11 +23,22 @@ from torch.utils.data import Dataset
 #         "아래는 작업을 설명하는 명령어입니다.\n\n"
 #         "Write a response that appropriately completes the request.\n명령어에 따른 요청을 적절히 완료하는 응답을 작성하세요.\n\n"
 #         "### Instruction(명령어):\n{instruction}\n\n### Response(응답):"
+=======
+#         "Below is an instruction that describes a task, paired with an input that provides further context. "
+#         "Write a response that appropriately completes the request.\n\n"
+#         "### Instruction:\n{instruction}\n\n### Input:\n{input}\n\n### Response:"
+#     ),
+#     "prompt_no_input": (
+#         "Below is an instruction that describes a task. "
+#         "Write a response that appropriately completes the request.\n\n"
+#         "### Instruction:\n{instruction}\n\n### Response:"
+>>>>>>> 2b37f4108afc35b18939596cb88db459af30545e
 #     ),
 # }
 
 PROMPT_DICT = {
     "prompt_input": (
+<<<<<<< HEAD
         "다음은 질문과 함께 제공되는 입력을 만족하는 답변을 하는 예제입니다.\n\n"
         "질문에 대한 답변을 작성하세요.\n\n"
         "### 질문:\n{instruction}\n\n### 입력:\n{input}\n\n### 답변:"
@@ -34,8 +46,22 @@ PROMPT_DICT = {
     "prompt_no_input": (
         "다음 질문에 대한 답변을 작성하세요.\n\n"
         "### 질문:\n{instruction}\n\n### 답변:"
+=======
+        "Below is an instruction that describes a task, paired with an input that provides further context.\n"
+        "아래는 작업을 설명하는 명령어와 추가적 맥락을 제공하는 입력이 짝을 이루는 예제입니다.\n\n"
+        "Write a response that appropriately completes the request.\n요청을 적절히 완료하는 응답을 작성하세요.\n\n"
+        "### Instruction(명령어):\n{instruction}\n\n### Input(입력):\n{input}\n\n### Response(응답):"
+    ),
+    "prompt_no_input": (
+        "Below is an instruction that describes a task.\n"
+        "아래는 작업을 설명하는 명령어입니다.\n\n"
+        "Write a response that appropriately completes the request.\n명령어에 따른 요청을 적절히 완료하는 응답을 작성하세요.\n\n"
+        "### Instruction(명령어):\n{instruction}\n\n### Response(응답):"
+>>>>>>> 2b37f4108afc35b18939596cb88db459af30545e
     ),
 }
+
+
 
 class InstructionDataset(Dataset):
     def __init__(self, dataset_config, tokenizer, partition="train"):

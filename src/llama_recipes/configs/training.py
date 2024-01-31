@@ -42,10 +42,13 @@ class train_config:
     
     ### basic setting
 <<<<<<< HEAD
+<<<<<<< HEAD
     # num_epochs: int=3
     num_epochs: int=2
     num_workers_dataloader: int=4
 =======
+=======
+>>>>>>> 2b37f4108afc35b18939596cb88db459af30545e
     num_epochs: int=3
     # num_epochs: int=1
     num_workers_dataloader: int=1
